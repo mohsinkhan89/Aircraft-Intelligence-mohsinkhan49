@@ -1281,3 +1281,174 @@ img {
     padding: 0;
     border: 0
 }
+
+/* Site-wide interaction and entrance motion */
+.text-reveal {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(18px);
+    transition: opacity .7s ease var(--reveal-delay, 0ms), transform .7s cubic-bezier(.2, .75, .25, 1) var(--reveal-delay, 0ms), filter .7s ease var(--reveal-delay, 0ms)
+}
+
+.text-reveal.visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0)
+}
+
+.btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    transition: transform .3s cubic-bezier(.2, .8, .2, 1), box-shadow .3s ease, letter-spacing .3s ease, border-color .3s ease
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -80%;
+    left: -35%;
+    width: 25%;
+    height: 260%;
+    background: rgba(255, 255, 255, .34);
+    transform: rotate(24deg) translateX(-240%);
+    transition: transform .65s ease
+}
+
+.btn:hover {
+    transform: translateY(-3px) scale(1.015);
+    letter-spacing: .55px;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, .28)
+}
+
+.btn:hover::before {
+    transform: rotate(24deg) translateX(650%)
+}
+
+.btn i,
+.btn span,
+.btn b {
+    transition: transform .28s ease
+}
+
+.btn:hover i,
+.btn:hover span,
+.btn:hover b {
+    transform: translateX(5px)
+}
+
+.service-card,
+.feature-card,
+.trust-item {
+    will-change: transform;
+    backface-visibility: hidden
+}
+
+.service-card {
+    position: relative;
+    overflow: hidden
+}
+
+.service-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    transition: width .38s ease, left .38s ease
+}
+
+.service-card:hover::before {
+    left: 0;
+    width: 100%
+}
+
+.service-card:hover .service-icon {
+    transform: translateY(-4px) scale(1.07) rotate(-2deg)
+}
+
+.service-icon {
+    transition: transform .42s cubic-bezier(.2, .8, .2, 1)
+}
+
+.feature-card {
+    transition: transform .42s cubic-bezier(.2, .8, .2, 1), box-shadow .42s ease
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 38px rgba(0, 21, 42, .3), inset 0 0 0 2px var(--gold)
+}
+
+.feature-icon {
+    transition: transform .45s cubic-bezier(.2, .8, .2, 1), filter .35s ease
+}
+
+.feature-card:hover .feature-icon {
+    transform: translateY(-4px) scale(1.08);
+    filter: drop-shadow(0 0 8px rgba(236, 203, 120, .36))
+}
+
+.trust-item {
+    transition: transform .32s ease, background-color .32s ease
+}
+
+.trust-item:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, .04)
+}
+
+.trust-item:hover .metric-icon {
+    animation: iconFloat .8s ease-in-out infinite alternate
+}
+
+.contact-card .contact-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(214, 164, 63, .72);
+    border-radius: 50%;
+    color: var(--gold);
+    font-size: 18px;
+    transition: transform .3s ease, color .3s ease, background-color .3s ease
+}
+
+.contact-card p:hover .contact-icon {
+    transform: rotate(-8deg) scale(1.08);
+    color: var(--navy);
+    background: var(--gold)
+}
+
+.service-card.visible,
+.feature-card.visible {
+    animation: cardEntrance .8s cubic-bezier(.18, .85, .3, 1)
+}
+
+@keyframes cardEntrance {
+    from { transform: translateY(32px) scale(.97) }
+    to { transform: translateY(0) scale(1) }
+}
+
+@keyframes iconFloat {
+    from { transform: translateY(0) }
+    to { transform: translateY(-4px) }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .text-reveal,
+    .text-reveal.visible {
+        opacity: 1;
+        filter: none;
+        transform: none
+    }
+
+    .service-card.visible,
+    .feature-card.visible,
+    .trust-item:hover .metric-icon {
+        animation: none
+    }
+}

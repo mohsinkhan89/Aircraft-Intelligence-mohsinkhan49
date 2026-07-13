@@ -28,6 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
   onScroll();
   backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+  const animatedText = document.querySelectorAll([
+    '.hero h1', '.hero-copy', '.promise',
+    '.service-card h2', '.service-card p', '.service-card a',
+    '.why-copy .kicker', '.why-copy h2', '.why-copy > p',
+    '.feature-content h3', '.feature-content p',
+    '.cta-inner h2', '.cta-inner > div:first-child p',
+    '.contact-card p', '.footer-grid h4'
+  ].join(','));
+  animatedText.forEach((element, index) => {
+    element.classList.add('text-reveal');
+    element.style.setProperty('--reveal-delay', `${(index % 3) * 90}ms`);
+  });
+
   const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -36,8 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }, { threshold: .12 });
-  document.querySelectorAll('.reveal').forEach((el, index) => {
-    el.style.transitionDelay = `${Math.min(index % 4, 3) * 80}ms`;
+  document.querySelectorAll('.reveal, .text-reveal').forEach((el, index) => {
+    if (el.classList.contains('reveal')) {
+      el.style.transitionDelay = `${Math.min(index % 4, 3) * 80}ms`;
+    }
     revealObserver.observe(el);
   });
 
