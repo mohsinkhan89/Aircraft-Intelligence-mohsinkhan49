@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.main-nav');
   const backTop = document.querySelector('.back-top');
   const counters = document.querySelectorAll('[data-count]');
+  const contactForm = document.querySelector('#contact-form');
 
   window.addEventListener('load', () => setTimeout(() => loader.classList.add('done'), 260));
 
@@ -34,7 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
     '.why-copy .kicker', '.why-copy h2', '.why-copy > p',
     '.feature-content h3', '.feature-content p',
     '.cta-inner h2', '.cta-inner > div:first-child p',
-    '.contact-card p', '.footer-grid h4'
+    '.contact-card p', '.footer-grid h4',
+    '.contact-heading h2', '.contact-heading > p',
+    '.contact-panel h3', '.contact-panel-copy', '.form-intro h3'
   ].join(','));
   animatedText.forEach((element, index) => {
     element.classList.add('text-reveal');
@@ -76,7 +79,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: .35 });
   countObserver.observe(document.querySelector('.trust-strip'));
 
-  const sections = [...document.querySelectorAll('main section[id], footer[id]')];
+  if (contactForm) {
+    contactForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const data = new FormData(contactForm);
+      const status = document.querySelector('#form-status');
+      const subject = `Aircraft inquiry: ${data.get('service')}`;
+      const body = [
+        `Name: ${data.get('name')}`,
+        `Email: ${data.get('email')}`,
+        `Phone: ${data.get('phone') || 'Not provided'}`,
+        `Service: ${data.get('service')}`,
+        '',
+        String(data.get('message'))
+      ].join('\n');
+
+      status.textContent = 'Your email application is opening with the inquiry details prepared.';
+      status.classList.add('show');
+      window.location.href = `mailto:info@aeromaxusa.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  }
+
+  const sections = [...document.querySelectorAll('main section[id]:not(#contact-cta), footer[id]')];
   const links = [...document.querySelectorAll('.main-nav a')];
   const sectionObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
